@@ -9,21 +9,42 @@
 </head>
 
 <body>
+
     <div class="container">
+
         <p>Enter your text or URL</p>
         <input type="text" placeholder="Text or URL" id="qrText">
 
+        <!-- QR SIZE SLIDER -->
+        <p>QR Size: <span id="sizeValue">150</span>px</p>
+        <input type="range" id="qrSize" min="100" max="400" value="150">
+
+        <!-- QR FOREGROUND COLOR -->
+        <p>QR Foreground Color</p>
+        <input type="color" id="qrColor" value="#000000">
+
+        <!-- QR BACKGROUND COLOR -->
+        <p>QR Background Color</p>
+        <input type="color" id="qrBgColor" value="#ffffff">
+
+        <!-- LOGO UPLOAD -->
+        <p>Upload Logo (Optional)</p>
+        <input type="file" id="logoUpload" accept="image/*">
+
         <div id="imgBox">
-            <img src="" id="qrImg" alt="">
+            <!-- canvas replaces img so we can draw logo -->
+            <canvas id="qrCanvas"></canvas>
         </div>
 
         <button onclick="generateQRCode()">Generate QR Code</button>
 
-        <!-- NEW DOWNLOAD BUTTON -->
+        <!-- DOWNLOAD BUTTON -->
         <button id="downloadBtn" disabled>Download QR Code</button>
+
     </div>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>

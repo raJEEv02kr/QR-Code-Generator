@@ -1,49 +1,96 @@
 let imgBox = document.getElementById("imgBox");
-let qrImg = document.getElementById("qrImg");
 let qrText = document.getElementById("qrText");
 let downloadBtn = document.getElementById("downloadBtn");
 
+let qrSize = document.getElementById("qrSize");
+let sizeValue = document.getElementById("sizeValue");
+let qrColor = document.getElementById("qrColor");
+let qrBgColor = document.getElementById("qrBgColor");
+let logoUpload = document.getElementById("logoUpload");
+
+let canvas = document.getElementById("qrCanvas");
+let ctx = canvas.getContext("2d");
+
+
+// Show slider value
+sizeValue.innerText = qrSize.value;
+
+qrSize.addEventListener("input", () => {
+  sizeValue.innerText = qrSize.value;
+});
+
+
 function generateQRCode() {
-  if (qrText.value.length > 0) {
-    qrImg.src =
-      "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" +
-      encodeURIComponent(qrText.value);
 
-    imgBox.classList.add("show-img");
+  if (qrText.value.length === 0) {
 
-    qrImg.onload = function () {
-      downloadBtn.disabled = false;
-    };
-  } else {
     qrText.classList.add("error");
-    downloadBtn.disabled = true;
 
     setTimeout(() => {
       qrText.classList.remove("error");
     }, 1000);
+
+    return;
   }
+
+  let size = qrSize.value;
+  let color = qrColor.value.replace("#", "");
+  let bgcolor = qrBgColor.value.replace("#", "");
+
+  const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/?" +
+    "size=" + size + "x" + size +
+    "&color=" + color +
+    "&bgcolor=" + bgcolor +
+    "&data=" + encodeURIComponent(qrText.value);
+
+  const qrImage = new Image();
+  qrImage.crossOrigin = "anonymous";
+  qrImage.src = qrURL;
+
+  qrImage.onload = function () {
+
+    canvas.width = size;
+    canvas.height = size;
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.drawImage(qrImage, 0, 0, size, size);
+
+    const file = logoUpload.files[0];
+
+    if (file) {
+
+      const logo = new Image();
+      logo.src = URL.createObjectURL(file);
+
+      logo.onload = function () {
+
+        const logoSize = size * 0.25;
+        const x = (size - logoSize) / 2;
+        const y = (size - logoSize) / 2;
+
+        ctx.drawImage(logo, x, y, logoSize, logoSize);
+
+      };
+
+    }
+
+    imgBox.classList.add("show-img");
+    downloadBtn.disabled = false;
+
+  };
+
 }
 
-// FIXED Download Logic (No New Tab Issue)
-downloadBtn.addEventListener("click", async function () {
-  if (!qrImg.src) return;
 
-  try {
-    const response = await fetch(qrImg.src);
-    const blob = await response.blob();
+// Download QR Code
+downloadBtn.addEventListener("click", function () {
 
-    const blobUrl = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
-    const link = document.createElement("a");
-    link.href = blobUrl;
-    link.download = "qr-code.png";
+  link.download = "qr-code.png";
+  link.href = canvas.toDataURL("image/png");
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  link.click();
 
-    window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {
-    alert("Download failed. Please try again.");
-  }
 });
