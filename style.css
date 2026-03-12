@@ -9,31 +9,36 @@ body {
     background: #B38BAF;
 }
 
+/* UPDATED CONTAINER */
 .container {
-    width: 400px;
-    padding: 25px 35px;
+    width: 900px;
+    max-width: 90%;
+    padding: 35px 45px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
+/* LABEL TEXT */
 .container p {
     font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 8px;
+    font-size: 17px;
+    margin-bottom: 10px;
 }
 
+/* INPUT FIELDS */
 .container input {
     width: 100%;
-    height: 50px;
+    height: 52px;
     border: 1px solid #6C436C;
     outline: none;
-    padding: 10px;
-    margin: 10px 0 20px;
-    border-radius: 5px;
+    padding: 12px;
+    margin: 10px 0 22px;
+    border-radius: 6px;
+    font-size: 15px;
     transition: border 0.3s ease;
 }
 
@@ -41,18 +46,20 @@ body {
     border: 1px solid #7B547A;
 }
 
+/* BUTTONS */
 .container button {
     width: 100%;
-    height: 50px;
+    height: 52px;
     background: #7B547A;
     color: #fff;
     border: 0;
     outline: 0;
-    border-radius: 5px;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    margin: 15px 0;
-    font-weight: 500;
+    margin: 16px 0;
+    font-weight: 600;
+    font-size: 16px;
     transition: 0.3s ease;
 }
 
@@ -68,26 +75,28 @@ body {
     opacity: 0.7;
 }
 
+/* QR DISPLAY */
 #imgBox {
-    width: 200px;
-    border-radius: 5px;
+    width: 230px;
+    border-radius: 6px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease;
 }
 
-#imgBox img {
-    width: 100%;
-    padding: 10px;
-}
-
 #imgBox.show-img {
-    max-height: 300px;
-    margin: 10px auto;
+    max-height: 340px;
+    margin: 18px auto;
     border: 1px solid #d1d1d1;
 }
 
-/* Error animation */
+/* CANVAS */
+#qrCanvas {
+    width: 100%;
+    padding: 12px;
+}
+
+/* ERROR SHAKE */
 .error {
     animation: shake 0.1s linear 5;
 }
@@ -112,4 +121,37 @@ body {
     100% {
         transform: translateX(0);
     }
+}
+
+/* QR SIZE SLIDER */
+
+#qrSize {
+    width: 100%;
+    margin: 10px 0 24px;
+    cursor: pointer;
+}
+
+/* SLIDER TRACK */
+#qrSize::-webkit-slider-runnable-track {
+    height: 6px;
+    background: #d4c2d4;
+    border-radius: 10px;
+}
+
+/* SLIDER HANDLE */
+#qrSize::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #7B547A;
+    margin-top: -7px;
+    cursor: pointer;
+}
+
+/* SIZE VALUE TEXT */
+#sizeValue {
+    font-weight: 700;
+    font-size: 17px;
+    color: #7B547A;
 }
