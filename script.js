@@ -8,8 +8,13 @@ let qrColor = document.getElementById("qrColor");
 let qrBgColor = document.getElementById("qrBgColor");
 let logoUpload = document.getElementById("logoUpload");
 
+let historyList = document.getElementById("historyList");
+
 let canvas = document.getElementById("qrCanvas");
 let ctx = canvas.getContext("2d");
+
+// Load QR history
+let qrHistory = JSON.parse(localStorage.getItem("qrHistory")) || [];
 
 
 // Show slider value
@@ -18,6 +23,46 @@ sizeValue.innerText = qrSize.value;
 qrSize.addEventListener("input", () => {
   sizeValue.innerText = qrSize.value;
 });
+
+
+// Save history
+function saveHistory(value) {
+
+  if (!value) return;
+
+  qrHistory.unshift(value);
+
+  // Remove duplicates + keep last 10
+  qrHistory = [...new Set(qrHistory)].slice(0,10);
+
+  localStorage.setItem("qrHistory", JSON.stringify(qrHistory));
+
+  renderHistory();
+}
+
+
+// Render history UI
+function renderHistory(){
+
+  historyList.innerHTML = "";
+
+  qrHistory.forEach(item => {
+
+    const li = document.createElement("li");
+
+    li.textContent = item;
+
+    li.style.cursor = "pointer";
+
+    li.onclick = () => {
+      qrText.value = item;
+      generateQRCode();
+    };
+
+    historyList.appendChild(li);
+  });
+
+}
 
 
 function generateQRCode() {
@@ -78,6 +123,9 @@ function generateQRCode() {
     imgBox.classList.add("show-img");
     downloadBtn.disabled = false;
 
+    // Save QR to history
+    saveHistory(qrText.value);
+
   };
 
 }
@@ -94,3 +142,7 @@ downloadBtn.addEventListener("click", function () {
   link.click();
 
 });
+
+
+// Load history when page loads
+renderHistory();

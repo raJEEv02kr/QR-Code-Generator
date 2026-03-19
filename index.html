@@ -31,8 +31,8 @@
         <p>Upload Logo (Optional)</p>
         <input type="file" id="logoUpload" accept="image/*">
 
+        <!-- QR PREVIEW -->
         <div id="imgBox">
-            <!-- canvas replaces img so we can draw logo -->
             <canvas id="qrCanvas"></canvas>
         </div>
 
@@ -40,6 +40,16 @@
 
         <!-- DOWNLOAD BUTTON -->
         <button id="downloadBtn" disabled>Download QR Code</button>
+
+
+        <!-- QR HISTORY SECTION -->
+        <div id="historyContainer">
+
+            <p class="historyTitle">Recent QR Codes</p>
+
+            <ul id="historyList"></ul>
+
+        </div>
 
     </div>
 
