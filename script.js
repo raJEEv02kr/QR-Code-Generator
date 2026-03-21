@@ -8,8 +8,13 @@ let qrColor = document.getElementById("qrColor");
 let qrBgColor = document.getElementById("qrBgColor");
 let logoUpload = document.getElementById("logoUpload");
 
+let historyList = document.getElementById("historyList");
+
 let canvas = document.getElementById("qrCanvas");
 let ctx = canvas.getContext("2d");
+
+// Load QR history
+let qrHistory = JSON.parse(localStorage.getItem("qrHistory")) || [];
 
 /* =========================
    THEME SYSTEM
@@ -128,6 +133,46 @@ qrSize.addEventListener("input", () => {
 });
 
 
+// Save history
+function saveHistory(value) {
+
+  if (!value) return;
+
+  qrHistory.unshift(value);
+
+  // Remove duplicates + keep last 10
+  qrHistory = [...new Set(qrHistory)].slice(0,10);
+
+  localStorage.setItem("qrHistory", JSON.stringify(qrHistory));
+
+  renderHistory();
+}
+
+
+// Render history UI
+function renderHistory(){
+
+  historyList.innerHTML = "";
+
+  qrHistory.forEach(item => {
+
+    const li = document.createElement("li");
+
+    li.textContent = item;
+
+    li.style.cursor = "pointer";
+
+    li.onclick = () => {
+      qrText.value = item;
+      generateQRCode();
+    };
+
+    historyList.appendChild(li);
+  });
+
+}
+
+
 function generateQRCode() {
 
   if (qrText.value.length === 0) {
@@ -186,6 +231,9 @@ function generateQRCode() {
     imgBox.classList.add("show-img");
     downloadBtn.disabled = false;
 
+    // Save QR to history
+    saveHistory(qrText.value);
+
   };
 
 }
@@ -201,43 +249,4 @@ downloadBtn.addEventListener("click", function () {
 
   link.click();
 
-});
-/* =========================
-   ANIMATED TOGGLE LOGIC
-========================= */
-
-const toggleTrack = document.getElementById("toggleTrack");
-const toggleThumb = document.getElementById("toggleThumb");
-
-function updateToggleUI(theme) {
-
-  if (theme === "light") {
-    toggleThumb.style.left = "4px";
-  }
-  else if (theme === "dark") {
-    toggleThumb.style.left = "34px";
-  }
-  else {
-    // auto (middle position)
-    toggleThumb.style.left = "19px";
-  }
-}
-
-// Initial position
-updateToggleUI(currentTheme);
-
-// Click toggle → cycle modes
-toggleTrack.addEventListener("click", () => {
-
-  if (currentTheme === "light") {
-    setTheme("dark");
-  }
-  else if (currentTheme === "dark") {
-    setTheme("auto");
-  }
-  else {
-    setTheme("light");
-  }
-
-  updateToggleUI(currentTheme);
 });

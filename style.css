@@ -461,3 +461,44 @@ input:checked+.slider {
 .container button:active {
     transform: scale(0.97);
 }
+/* QR History Section */
+
+#historyContainer {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f6f3f8;
+    border-radius: 10px;
+    border: 1px solid #e3dbe8;
+}
+
+.historyTitle {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #6C436C;
+    text-align: center;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#historyList li {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+#historyList li:hover {
+    background: #7B547A;
+    color: white;
+    cursor: pointer;
+    transform: scale(1.02);
+}
