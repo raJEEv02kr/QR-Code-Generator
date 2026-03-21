@@ -16,6 +16,114 @@ let ctx = canvas.getContext("2d");
 // Load QR history
 let qrHistory = JSON.parse(localStorage.getItem("qrHistory")) || [];
 
+/* =========================
+   THEME SYSTEM
+========================= */
+
+// Load saved theme
+let currentTheme = localStorage.getItem("theme") || "light";
+
+// Apply theme
+function applyTheme(theme) {
+
+  if (theme === "auto") {
+
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    document.body.setAttribute("data-theme", systemDark ? "dark" : "light");
+
+  } else {
+
+    document.body.setAttribute("data-theme", theme);
+
+  }
+
+}
+
+// Set theme (called from buttons)
+function setTheme(theme) {
+
+  currentTheme = theme;
+
+  localStorage.setItem("theme", theme);
+
+  applyTheme(theme);
+}
+
+// Initial load
+applyTheme(currentTheme);
+
+// Listen for system theme changes (Auto mode)
+window.matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", () => {
+    if (currentTheme === "auto") {
+      applyTheme("auto");
+    }
+  });
+
+const themeLabel = document.getElementById("themeLabel");
+const autoToggle = document.getElementById("autoToggle");
+
+// Update label UI
+function updateThemeLabel() {
+
+  let appliedTheme;
+
+  if (currentTheme === "auto") {
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    appliedTheme = isDark ? "dark" : "light";
+    autoToggle.checked = true;
+  } else {
+    appliedTheme = currentTheme;
+    autoToggle.checked = false;
+  }
+
+  const icon = document.querySelector("#themeLabel .icon");
+  const text = document.querySelector("#themeLabel .text");
+
+  if (appliedTheme === "dark") {
+    icon.innerText = "☾";
+    text.innerText = "Dark";
+  } else {
+    icon.innerText = "☀";
+    text.innerText = "Light";
+  }
+}
+
+// Toggle Auto mode
+autoToggle.addEventListener("change", () => {
+
+  if (autoToggle.checked) {
+    setTheme("auto");
+  } else {
+    setTheme("light"); // fallback
+  }
+
+  updateThemeLabel();
+});
+
+// Click label → toggle light/dark manually
+themeLabel.addEventListener("click", () => {
+
+  if (currentTheme === "auto") return;
+
+  if (currentTheme === "light") {
+    setTheme("dark");
+  } else {
+    setTheme("light");
+  }
+
+  updateThemeLabel();
+});
+
+// Initial UI sync
+updateThemeLabel();
+
+
+
+/* =========================
+   QR LOGIC (UNCHANGED)
+========================= */
 
 // Show slider value
 sizeValue.innerText = qrSize.value;
@@ -142,7 +250,3 @@ downloadBtn.addEventListener("click", function () {
   link.click();
 
 });
-
-
-// Load history when page loads
-renderHistory();

@@ -1,3 +1,4 @@
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -5,80 +6,166 @@
     box-sizing: border-box;
 }
 
+/* =========================
+   THEME BASE
+========================= */
+
 body {
-    background: #B38BAF;
+    transition:
+        background 0.6s ease,
+        color 0.3s ease;
 }
 
-/* UPDATED CONTAINER */
+/* 🔥 ADD THIS (BACKGROUND FIX) */
+
+/* LIGHT THEME BACKGROUND (soft white) */
+body[data-theme="light"] {
+    background: #c7d6e6;
+    /* soft white (not harsh white) */
+}
+
+/* DARK THEME BACKGROUND */
+body[data-theme="dark"] {
+    background: #131e37;
+    color: #f1f5f9;
+}
+
+/* =========================
+   CONTAINER (GLASS UI)
+========================= */
+
 .container {
     width: 900px;
     max-width: 90%;
-    padding: 35px 45px;
+    padding: 40px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #fff;
-    border-radius: 12px;
+
+    border-radius: 16px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    transition: all 0.3s ease;
 }
 
-/* LABEL TEXT */
+/* LIGHT */
+body[data-theme="light"] .container {
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* DARK */
+body[data-theme="dark"] .container {
+    background: rgba(30, 41, 59, 0.6);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* =========================
+   TEXT
+========================= */
+
 .container p {
     font-weight: 600;
-    font-size: 17px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-bottom: 8px;
 }
 
-/* INPUT FIELDS */
+/* DARK TEXT */
+body[data-theme="dark"] .container p {
+    color: #cbd5f5;
+}
+
+/* =========================
+   INPUTS (MODERN)
+========================= */
+
 .container input {
     width: 100%;
     height: 52px;
-    border: 1px solid #6C436C;
     outline: none;
-    padding: 12px;
+    padding: 12px 15px;
     margin: 10px 0 22px;
-    border-radius: 6px;
+    border-radius: 10px;
     font-size: 15px;
-    transition: border 0.3s ease;
+
+    transition: all 0.25s ease;
 }
 
+/* LIGHT INPUT */
+body[data-theme="light"] .container input {
+    border: 1px solid #ddd;
+    background: #ffffff;
+    color: #000;
+}
+
+/* DARK INPUT */
+body[data-theme="dark"] .container input {
+    border: 1px solid #475569;
+    background: #334155;
+    color: #f1f5f9;
+}
+
+/* FOCUS EFFECT */
 .container input:focus {
-    border: 1px solid #7B547A;
+    border: 1px solid #6366f1;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
 }
 
-/* BUTTONS */
+/* =========================
+   BUTTONS (GRADIENT STYLE)
+========================= */
+
 .container button {
     width: 100%;
     height: 52px;
-    background: #7B547A;
-    color: #fff;
-    border: 0;
-    outline: 0;
-    border-radius: 6px;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+    border: none;
+    outline: none;
+    border-radius: 10px;
     cursor: pointer;
     margin: 16px 0;
     font-weight: 600;
     font-size: 16px;
-    transition: 0.3s ease;
+
+    transition: all 0.25s ease;
 }
 
+/* LIGHT BUTTON */
+body[data-theme="light"] .container button {
+    background: linear-gradient(135deg, #7B547A, #9f6ca3);
+    color: white;
+    box-shadow: 0 8px 20px rgba(123, 84, 122, 0.4);
+}
+
+/* DARK BUTTON */
+body[data-theme="dark"] .container button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+}
+
+/* HOVER EFFECT */
 .container button:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
-/* Disabled download button styling */
+/* DISABLED */
 .container button:disabled {
-    background: #c7b5c7;
+    background: #64748b;
     cursor: not-allowed;
     box-shadow: none;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-/* QR DISPLAY */
+/* =========================
+   QR DISPLAY
+========================= */
+
 #imgBox {
-    width: 230px;
-    border-radius: 6px;
+    width: 240px;
+    border-radius: 12px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease;
@@ -86,17 +173,33 @@ body {
 
 #imgBox.show-img {
     max-height: 340px;
-    margin: 18px auto;
-    border: 1px solid #d1d1d1;
+    margin: 20px auto;
+    padding: 10px;
 }
 
-/* CANVAS */
+/* LIGHT QR BOX */
+body[data-theme="light"] #imgBox {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* DARK QR BOX */
+body[data-theme="dark"] #imgBox {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+   CANVAS
+========================= */
+
 #qrCanvas {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
 }
 
-/* ERROR SHAKE */
+/* =========================
+   ERROR ANIMATION
+========================= */
+
 .error {
     animation: shake 0.1s linear 5;
 }
@@ -123,37 +226,240 @@ body {
     }
 }
 
-/* QR SIZE SLIDER */
+/* =========================
+   SLIDER (MODERN)
+========================= */
 
 #qrSize {
     width: 100%;
-    margin: 10px 0 24px;
+    margin: 12px 0 24px;
     cursor: pointer;
 }
 
-/* SLIDER TRACK */
 #qrSize::-webkit-slider-runnable-track {
     height: 6px;
-    background: #d4c2d4;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
 
-/* SLIDER HANDLE */
 #qrSize::-webkit-slider-thumb {
     appearance: none;
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     border-radius: 50%;
-    background: #7B547A;
-    margin-top: -7px;
+    background: #6366f1;
+    margin-top: -6px;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
 }
 
-/* SIZE VALUE TEXT */
 #sizeValue {
     font-weight: 700;
-    font-size: 17px;
-    color: #7B547A;
+    font-size: 16px;
+}
+
+/* =========================
+   THEME SWITCHER
+========================= */
+
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+}
+
+/* SWITCH BUTTON */
+.theme-switcher button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.25s ease;
+}
+
+/* LIGHT */
+body[data-theme="light"] .theme-switcher button {
+    background: rgb(148, 147, 147);
+}
+
+/* DARK */
+body[data-theme="dark"] .theme-switcher button {
+    background: #2c3c57f8;
+    color: white;
+}
+
+/* HOVER */
+.theme-switcher button:hover {
+    transform: scale(1.1);
+}
+
+
+/* =========================
+   THEME PANEL (IMPROVED)
+========================= */
+
+.theme-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 12px 18px;
+    border-radius: 20px;
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    background: rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.25),
+        inset 0 1px rgba(255, 255, 255, 0.2);
+
+    transition: all 0.3s ease;
+}
+
+/* LABEL (LIGHT / DARK) */
+.theme-info {
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Bigger Icons */
+.theme-info span {
+    font-size: 18px;
+}
+
+/* =========================
+   SWITCH (FIXED + SMART AUTO)
+========================= */
+
+.switch {
+    position: relative;
+    width: 70px;
+    /* increased width */
+    height: 28px;
+}
+
+.switch input {
+    display: none;
+}
+
+/* Track */
+.slider {
+    position: absolute;
+    inset: 0;
+    background-color: #64748b;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+/* Thumb */
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+    z-index: 2;
+}
+
+/* ACTIVE */
+input:checked+.slider {
+    background: #6366f1;
+}
+
+/* MOVE THUMB */
+input:checked+.slider:before {
+    transform: translateX(42px);
+}
+
+/* =========================
+   AUTO TEXT (SMART POSITION)
+========================= */
+
+.slider::after {
+    content: "AUTO";
+    position: absolute;
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    top: 7px;
+    left: 10px;
+    transition: 0.3s;
+    z-index: 1;
+}
+
+/* WHEN TOGGLE ON → MOVE TEXT LEFT */
+input:checked+.slider::after {
+    left: 8px;
+}
+
+/* WHEN TOGGLE OFF → MOVE TEXT RIGHT */
+.switch input:not(:checked)+.slider::after {
+    left: 30px;
+}
+
+/* Hover (nice touch) */
+.slider:hover {
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   BACKGROUND ANIMATION
+========================= */
+
+body[data-theme="light"],
+body[data-theme="dark"] {
+    animation: bgZoom 10s ease-in-out infinite alternate;
+}
+
+@keyframes bgZoom {
+    0% {
+        background-size: 100%;
+    }
+
+    100% {
+        background-size: 110%;
+    }
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+/* Click feedback */
+.slider:active:before {
+    transform: scale(0.9);
+}
+
+/* Smooth hover glow */
+input:checked+.slider {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+}
+
+.container button:active {
+    transform: scale(0.97);
 }
 /* QR History Section */
 
