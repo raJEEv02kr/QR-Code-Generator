@@ -10,6 +10,22 @@
 
 <body>
 
+    <!-- THEME TOGGLE -->
+    <div class="theme-panel">
+
+        <div class="theme-info" id="themeLabel">
+            <span class="icon">☀</span>
+            <span class="text">Light</span>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="autoToggle">
+            <span class="slider"></span>
+        </label>
+
+    </div>
+
+
     <div class="container">
 
         <p>Enter your text or URL</p>
@@ -32,13 +48,11 @@
         <input type="file" id="logoUpload" accept="image/*">
 
         <div id="imgBox">
-            <!-- canvas replaces img so we can draw logo -->
             <canvas id="qrCanvas"></canvas>
         </div>
 
         <button onclick="generateQRCode()">Generate QR Code</button>
 
-        <!-- DOWNLOAD BUTTON -->
         <button id="downloadBtn" disabled>Download QR Code</button>
 
     </div>
