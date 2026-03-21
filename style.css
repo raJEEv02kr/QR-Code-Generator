@@ -15,8 +15,9 @@ body {
         background 0.6s ease,
         color 0.3s ease;
 }
-
-/* 🔥 ADD THIS (BACKGROUND FIX) */
+body {
+    overflow-y: auto;
+}
 
 /* LIGHT THEME BACKGROUND (soft white) */
 body[data-theme="light"] {

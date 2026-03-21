@@ -13,6 +13,10 @@ let historyList = document.getElementById("historyList");
 let canvas = document.getElementById("qrCanvas");
 let ctx = canvas.getContext("2d");
 
+/* ✅ ADDED */
+let shareBtn = document.getElementById("shareBtn");
+
+
 // Load QR history
 let qrHistory = JSON.parse(localStorage.getItem("qrHistory")) || [];
 
@@ -231,6 +235,9 @@ function generateQRCode() {
     imgBox.classList.add("show-img");
     downloadBtn.disabled = false;
 
+    /* ✅ ADDED */
+    if (shareBtn) shareBtn.disabled = false;
+
     // Save QR to history
     saveHistory(qrText.value);
 
@@ -250,3 +257,45 @@ downloadBtn.addEventListener("click", function () {
   link.click();
 
 });
+
+
+/* =========================
+   SHARE FEATURE (ADDED ONLY)
+========================= */
+
+if (shareBtn) {
+
+  shareBtn.disabled = true;
+
+  shareBtn.addEventListener("click", async function () {
+
+    try {
+
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+
+      const file = new File([blob], "qr-code.png", { type: "image/png" });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+        await navigator.share({
+          title: "QR Code",
+          text: "Check out this QR Code",
+          files: [file]
+        });
+
+      } else {
+
+        alert("Sharing not supported on this device. Please download the QR.");
+
+      }
+
+    } catch (err) {
+      console.log("Share failed:", err);
+    }
+
+  });
+
+}
